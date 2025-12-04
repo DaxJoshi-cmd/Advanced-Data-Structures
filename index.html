@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Data Structures - Engineering Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+/* --- PROFESSIONAL ENGINEERING THEME --- */
+:root {
+    --primary: #0f172a;       /* Slate 900 */
+    --accent: #0ea5e9;        /* Sky 500 */
+    --accent-dark: #0284c7;   /* Sky 600 */
+    --secondary: #64748b;     /* Slate 500 */
+    --bg-body: #f8fafc;       /* Slate 50 */
+    --bg-card: #ffffff;
+    --border: #e2e8f0;        /* Slate 200 */
+    --success: #10b981;
+    --error: #ef4444;
+    --code-bg: #1e293b;
+    --quiz-bg: #f1f5f9;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-body);
+    font-family: 'Inter', sans-serif;
+    color: var(--primary);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+    gap: 40px;
+}
+
+/* Slide Container */
+.slide-container {
+    background-color: var(--bg-card);
+    width: 1200px;
+    height: 675px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border);
+    padding: 50px 60px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Slide Header */
+.slide-header {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--primary);
+    letter-spacing: -0.5px;
+}
+
+.slide-tag {
+    font-family: 'Roboto Mono', monospace;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Content Layouts */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 50px;
+    height: 100%;
+}
+
+.text-content h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    color: var(--accent-dark);
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+p, li {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #334155;
+    margin-bottom: 12px;
+}
+
+ul { padding-left: 20px; margin: 0; }
+li { margin-bottom: 10px; }
+
+/* Code Blocks */
+.code-block {
+    background: var(--code-bg);
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 14px;
+    border-left: 4px solid var(--accent);
+    margin: 15px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.keyword { color: #c084fc; } .type { color: #38bdf8; } .var { color: #f472b6; } .func { color: #facc15; } .comment { color: #64748b; font-style: italic; }
+
+/* Complexity Tables */
+.complexity-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+}
+
+.complexity-table th {
+    text-align: left;
+    background: #f1f5f9;
+    padding: 10px;
+    color: var(--secondary);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+}
+
+.complexity-table td {
+    padding: 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--primary);
+}
+
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.badge-green { background: #dcfce7; color: #166534; }
+.badge-yellow { background: #fef9c3; color: #854d0e; }
+
+/* Visual Elements */
+.diagram-box {
+    background: #f8fafc; border: 1px solid var(--border); border-radius: 8px;
+    display: flex; justify-content: center; align-items: center; height: 100%; position: relative;
+}
+.diagram-box svg { max-width: 90%; max-height: 90%; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); }
+
+/* Interactive Tiles */
+.tile-grid { display: flex; gap: 20px; width: 100%; margin-top: 20px; }
+.tile {
+    flex: 1; background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 25px; cursor: pointer; transition: all 0.2s ease; border-bottom: 4px solid var(--border);
+}
+.tile:hover { transform: translateY(-4px); border-bottom-color: var(--accent); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+.tile-icon { font-size: 32px; color: var(--accent); margin-bottom: 15px; }
+
+/* FAQ Accordion */
+.faq-container { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+.faq-item { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.faq-question {
+    background: #f8fafc; padding: 15px 20px; font-weight: 600; color: var(--primary);
+    cursor: default; display: flex; justify-content: space-between; align-items: center;
+}
+.faq-answer { padding: 15px 20px; background: white; color: var(--secondary); font-size: 14px; border-top: 1px solid var(--border); display: block; }
+
+/* Demo Terminal */
+.terminal-window {
+    background: #1e293b; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    overflow: hidden; height: 100%; display: flex; flex-direction: column;
+}
+.terminal-header { background: #0f172a; padding: 10px 15px; display: flex; align-items: center; gap: 8px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.dot-red { background: #ef4444; } .dot-yellow { background: #f59e0b; } .dot-green { background: #22c55e; }
+.terminal-body { padding: 0; flex: 1; overflow-y: auto; }
+.terminal-body::-webkit-scrollbar { width: 8px; }
+.terminal-body::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+/* --- QUIZ PRO STYLES --- */
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+@keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
+.quiz-wrapper { display: flex; flex-direction: column; height: 100%; animation: slideUp 0.6s ease-out; }
+
+.quiz-progress-bar {
+    width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; margin-bottom: 25px; overflow: hidden;
+}
+.quiz-progress-fill {
+    height: 100%; background: var(--accent); width: 0%; transition: width 0.4s ease;
+}
+
+.quiz-stats {
+    display: flex; justify-content: space-between; margin-bottom: 20px;
+    font-family: 'Roboto Mono', monospace; font-size: 14px; color: var(--secondary);
+}
+
+.quiz-question-box {
+    background: white; border: 1px solid var(--border); padding: 30px; border-radius: 12px; margin-bottom: 25px;
+    font-size: 20px; font-weight: 600; color: var(--primary); box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--accent);
+}
+
+.quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+.quiz-option {
+    background: white; border: 1px solid var(--border); padding: 18px 25px;
+    border-radius: 8px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 16px; display: flex; align-items: center;
+}
+.quiz-option:hover {
+    border-color: var(--accent); background: #f0f9ff; transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+}
+.quiz-option.correct {
+    background: #ecfdf5; border-color: var(--success); color: #047857;
+    animation: pulseGreen 0.6s;
+}
+.quiz-option.wrong {
+    background: #fef2f2; border-color: var(--error); color: #b91c1c;
+    animation: shake 0.4s;
+}
+
+.quiz-controls { margin-top: auto; display: flex; justify-content: flex-end; }
+
+.quiz-btn {
+    background: var(--primary); color: white; border: none; padding: 12px 30px;
+    border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600;
+    transition: background 0.2s;
+}
+.quiz-btn:hover { background: #334155; }
+.quiz-btn:disabled { background: #94a3b8; cursor: not-allowed; opacity: 0.7; }
+
+/* Result Terminal */
+.result-terminal {
+    background: #1e293b; color: #f8fafc; padding: 40px; border-radius: 12px;
+    font-family: 'Roboto Mono', monospace; text-align: left; width: 100%; max-width: 600px;
+    margin: 0 auto; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+}
+.term-line { margin-bottom: 10px; display: block; }
+.term-green { color: #4ade80; }
+.term-blue { color: #60a5fa; }
+.term-purple { color: #c084fc; }
+
+/* Footer */
+.slide-footer {
+    margin-top: auto; border-top: 1px solid var(--border); padding-top: 15px;
+    display: flex; justify-content: space-between; font-size: 12px; color: var(--secondary); font-family: 'Roboto Mono', monospace;
+}
+
+/* Modals */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(4px); z-index: 1000; display: none; justify-content: center; align-items: center;
+    opacity: 0; transition: opacity 0.3s ease;
+}
+.modal-overlay.active { display: flex; opacity: 1; }
+.modal-content {
+    background: white; width: 900px; padding: 40px; border-radius: 12px; position: relative;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); transform: scale(0.95); transition: transform 0.2s ease;
+}
+.modal-overlay.active .modal-content { transform: scale(1); }
+.close-btn {
+    position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; color: var(--secondary); cursor: pointer;
+}
+.close-btn:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<div class="slide-container">
+    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--border); margin-bottom: 40px;">
+        <img src="gtu.jpg" alt="GTU Logo" style="height: 80px; object-fit: contain;">
+        <img src="images.png" alt="B.H. Gardi Logo" style="height: 80px; object-fit: contain;">
+    </div>
+
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
+        <span class="slide-tag" style="margin-bottom: 20px;">CS202: Data Structures & Algorithms</span>
+        <h1 style="font-family: 'Poppins'; font-size: 56px; line-height: 1.1; margin: 0 0 30px 0; color: var(--primary);">
+            Advanced Linear<br>
+            <span style="color: var(--accent);">Data Structures</span>
+        </h1>
+        <p style="font-size: 20px; color: var(--secondary); max-width: 700px; margin-bottom: 50px;">
+            A technical analysis of memory management, time complexity, and implementation of Stacks, Queues, and Linked Lists.
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; border-left: 4px solid var(--accent); padding-left: 30px;">
+            <div>
+                <span style="display: block; font-size: 12px; text-transform: uppercase; color: var(--secondary); font-weight: 600;">Presented By</span>
+                <strong style="font-size: 18px;">Dax Joshi & Ankit</strong>
+                <div style="font-size: 14px; color: var(--secondary); margin-top: 4px;">Computer Science Dept.</div>
+            </div>
+            <div>
+                <span style="display: block; font-size: 12px; text-transform: uppercase; color: var(--secondary); font-weight: 600;">References</span>
+                <strong style="font-size: 18px;">GeeksforGeeks, ANSI C</strong>
+                <div style="font-size: 14px; color: var(--secondary); margin-top: 4px;">Standard Documentation</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <span>B.H.Gardi College of Engineering</span>
+        <span>Slide 01/11</span>
+    </div>
+</div>
+
+<div class="slide-container">
+    <div class="slide-header">
+        <h2>Stack Implementation</h2>
+        <span class="slide-tag">LIFO Structure</span>
+    </div>
+    
+    <div class="content-grid">
+        <div class="text-content">
+            <h3>Structure Definition (C)</h3>
+            <p>A Stack is a linear data structure following the <strong>Last-In, First-Out</strong> principle. Below is the standard array-based implementation.</p>
+            
+            <div class="code-block">
+                <span class="keyword">#define</span> MAX_SIZE 100<br>
+                <span class="keyword">typedef struct</span> {<br>
+                &nbsp;&nbsp;<span class="type">int</span> arr[MAX_SIZE];<br>
+                &nbsp;&nbsp;<span class="type">int</span> top;<br>
+                } <span class="type">Stack</span>;
+            </div>
+
+            <h3>Time Complexity Analysis</h3>
+            <table class="complexity-table">
+                <tr><th>Operation</th><th>Time</th><th>Description</th></tr>
+                <tr><td>Push</td><td><span class="badge badge-green">O(1)</span></td><td>Insert at top index</td></tr>
+                <tr><td>Pop</td><td><span class="badge badge-green">O(1)</span></td><td>Remove from top index</td></tr>
+                <tr><td>Peek</td><td><span class="badge badge-green">O(1)</span></td><td>Access top element</td></tr>
+                <tr><td>IsFull</td><td><span class="badge badge-green">O(1)</span></td><td>Check capacity limit</td></tr>
+            </table>
+        </div>
+        
+        <div class="diagram-box">
+             <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 50 50 L 50 250 L 150 250 L 150 50" fill="none" stroke="#334155" stroke-width="3"/>
+                <rect x="55" y="210" width="90" height="35" rx="2" fill="#e2e8f0" stroke="#94a3b8"/>
+                <text x="100" y="232" font-family="Roboto Mono" font-size="12" fill="#475569" text-anchor="middle">Index 0</text>
+                <rect x="55" y="170" width="90" height="35" rx="2" fill="#e2e8f0" stroke="#94a3b8"/>
+                <text x="100" y="192" font-family="Roboto Mono" font-size="12" fill="#475569" text-anchor="middle">Index 1</text>
+                <rect x="55" y="130" width="90" height="35" rx="2" fill="#bae6fd" stroke="#0ea5e9" stroke-width="2"/>
+                <text x="100" y="152" font-family="Roboto Mono" font-size="12" fill="#0369a1" text-anchor="middle" font-weight="bold">TOP</text>
+                <text x="170" y="152" font-family="Inter" font-size="12" fill="#0ea5e9">← stack.top</text>
+            </svg>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <span>Source: GeeksforGeeks - Stack Implementation</span>
+        <span>Slide 02/11</span>
+    </div>
+</div>
+
+<div class="slide-container">
+    <div class="slide-header">
+        <h2>Singly Linked List</h2>
+        <span class="slide-tag">Dynamic Memory</span>
+    </div>
+
+    <div class="content-grid">
+        <div class="text-content">
+            <h3>Node Structure (C)</h3>
+            <p>Unlike arrays, elements are not stored in contiguous memory locations. Each node links to the next.</p>
+            
+            <div class="code-block">
+                <span class="keyword">struct</span> <span class="type">Node</span> {<br>
+                &nbsp;&nbsp;<span class="type">int</span> data;<br>
+                &nbsp;&nbsp;<span class="keyword">struct</span> <span class="type">Node</span>* next;<br>
+                };
+            </div>
+
+            <div style="margin-top: 20px;">
+                <h3 style="color: #334155;">Key Characteristics</h3>
+                <ul>
+                    <li><strong>Dynamic Size:</strong> Allocates memory as needed (heap).</li>
+                    <li><strong>Cache Unfriendly:</strong> Nodes are scattered in memory.</li>
+                    <li><strong>No Random Access:</strong> Accessing the Nth element requires <span class="badge badge-yellow">O(n)</span> traversal.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="diagram-box">
+             <svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="30" width="60" height="40" fill="white" stroke="#334155" stroke-width="2"/>
+                <line x1="50" y="30" x2="50" y2="70" stroke="#334155" stroke-width="2"/>
+                <text x="30" y="55" font-family="Roboto Mono" font-size="12" text-anchor="middle">10</text>
+                <line x1="70" y1="50" x2="100" y2="50" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+                <rect x="110" y="30" width="60" height="40" fill="white" stroke="#334155" stroke-width="2"/>
+                <line x1="150" y1="30" x2="150" y2="70" stroke="#334155" stroke-width="2"/>
+                <text x="130" y="55" font-family="Roboto Mono" font-size="12" text-anchor="middle">20</text>
+                <line x1="170" y1="50" x2="200" y2="50" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="210" y="55" font-family="Roboto Mono" font-size="14" font-weight="bold" fill="#ef4444">NULL</text>
+            </svg>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <span>Source: GeeksforGeeks - Singly Linked List Tutorial</span>
+        <span>Slide 03/11</span>
+    </div>
+</div>
+
+<div class="slide-container">
+    <div class="slide-header">
+        <h2>Core Algorithms</h2>
+        <span class="slide-tag">Logic & Complexity</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+        <div>
+            <h3>Insertion Logic</h3>
+            <table class="complexity-table" style="margin-bottom: 20px;">
+                <tr><th>Position</th><th>Complexity</th></tr>
+                <tr><td>Beginning</td><td><span class="badge badge-green">O(1)</span></td></tr>
+                <tr><td>End</td><td><span class="badge badge-yellow">O(n)</span></td></tr>
+            </table>
+            <div class="code-block">
+                <span class="type">void</span> <span class="func">insertFront</span>(<span class="type">Node</span>** head, <span class="type">int</span> val) {<br>
+                &nbsp;&nbsp;<span class="type">Node</span>* newNode = <span class="keyword">malloc</span>(<span class="keyword">sizeof</span>(Node));<br>
+                &nbsp;&nbsp;newNode->data = val;<br>
+                &nbsp;&nbsp;newNode->next = *head;<br>
+                &nbsp;&nbsp;*head = newNode;<br>
+                }
+            </div>
+        </div>
+
+        <div>
+            <h3>Deletion Logic</h3>
+            <table class="complexity-table" style="margin-bottom: 20px;">
+                <tr><th>Position</th><th>Complexity</th></tr>
+                <tr><td>Beginning</td><td><span class="badge badge-green">O(1)</span></td></tr>
+                <tr><td>End</td><td><span class="badge badge-yellow">O(n)</span></td></tr>
+            </table>
+            <div class="code-block">
+                <span class="type">void</span> <span class="func">deleteFront</span>(<span class="type">Node</span>** head) {<br>
+                &nbsp;&nbsp;<span class="type">Node</span>* temp = *head;<br>
+                &nbsp;&nbsp;*head = (*head)->next;<br>
+                &nbsp;&nbsp;<span class="keyword">free</span>(temp);<br>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <span>Optimization Note: Keeping a Tail pointer makes End Insertion O(1)</span>
+        <span>Slide 04/11</span>
+    </div>
+</div>
+
+<div class="slide-container">
+    <div class="slide-header">
+        <h2>Advanced Variations</h2>
+        <span class="slide-tag">Extended Functionality</span>
+    </div>
+
+    <p style="font-size: 18px; color: var(--secondary);">Click below to explore complex variations of the Linked List structure.</p>
+
+    <div class="tile-grid">
+        <div class="tile" onclick="openModal('modal-doubly')">
+            <i class="fa-solid fa-code-branch tile-icon"></i>
+            <h3>Doubly Linked List</h3>
+            <p style="font-size: 14px; color: var(--secondary);">Nodes store pointers to both <strong>Previous</strong> and <strong>Next</strong> nodes.</p>
+            <div style="margin-top: 15px;">
+                <span class="badge badge-green">Bidirectional</span>
+            </div>
+        </div>
+
+        <div class="tile" onclick="openModal('modal-circular')">
+            <i class="fa-solid fa-circle-notch tile-icon"></i>
+            <h3>Circular Linked List</h3>
+            <p style="font-size: 14px; color: var(--secondary);">The <strong>Last Node</strong> links back to the <strong>Head</strong>.</p>
+            <div style="margin-top: 15px;">
+                <span class="badge badge-green">Continuous Loop</span>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <span>Click tiles for definitions and advantages</span>
+        <span>Slide 05/11</span>
+    </div>
+</div>
+
+<div class="slide-container">
+    <div class="slide-header">
+        <h2>Real World Applications</h2>
+        <span class="slide-tag">Industry Use Cases</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;">
+        <div class="tile" style="cursor: default; border-bottom: 1px solid var(--border);">
+            <div style="background: #e0f2fe; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <i class="fa-solid fa-computer" style="color: #0284c7; font-size: 20px;"></i>
+            </div>
+            <h4 style="margin: 0 0 10px 0;">OS Scheduling</h4>
+            <p style="font-size: 14px; color: #475569;"><strong>Round Robin Scheduling</strong> uses Circular Linked Lists to cycle through processes efficiently.</p>
+        </div>
+
+        <div class="tile" style="cursor: default; border-bottom: 1px solid var(--border);">
+            <div style="background: #fce7f3; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <i class="fa-solid fa-clock-rotate-left" style="color: #db2777; font-size: 20px;"></i>
+            </div>
+            <h4 style="margin: 0 0 10px 0;">Browser History</h4>
+            <p style="font-size: 14px; color: #475569;"><strong>Doubly Linked Lists</strong> enable the 'Back' and 'Forward' navigation buttons in browsers.</p>
+        </div>
+
+        <div class="tile" style="cursor: default; border-bottom: 1px solid var(--border);">
+            <div style="background: #dcfce7; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <i class="fa-solid fa-music" style="color: #16a34a; font-size: 20px;"></i>
+            </div>
+            <h4 style="margin: 0 0 10px 0;">Music Playlists</h4>
+            <p style="font-size: 14px; color: #475569;">Circular lists allow playlists to loop endlessly without manual restart.</p>
+        </div>
+    </div>
+
+    <div class="slide-footer">
+        <span>Source: GFG - Applications of Linked Lists</span>
+        <span>Slide 06/11</span>
+    </div>
+</div>
+
+<div class="slide-container">
+    <div class="slide-header">
+        <h2>Demo: Stack Program</h2>
+        <span class="slide-tag">Complete C Implementation</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 40px; height: 100%;">
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+            <h3 style="color: var(--primary);">Program Overview</h3>
+            <p>This code implements a complete Stack using an Array.</p>
+            <ul style="margin-top: 20px; font-size: 15px;">
+                <li><strong>push(x):</strong> Adds 'x' to top. Checks for Overflow.</li>
+                <li><strong>pop():</strong> Returns top element. Checks for Underflow.</li>
+                <li><strong>peek():</strong> View top element without removing.</li>
+                <li><strong>main():</strong> Driver function to test logic.</li>
+            </ul>
+        </div>
+
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="dot dot-red"></div>
+                <div class="dot dot-yellow"></div>
+                <div class="dot dot-green"></div>
+                <span style="color: #94a3b8; font-size: 12px; margin-left: 10px; font-family: monospace;">stack_demo.c</span>
+            </div>
+            <div class="terminal-body code-block" style="margin: 0; border-radius: 0; border: none; font-size: 13px;">
+<pre style="margin:0;"><span class="comment">// Complete C Program to Implement Stack Operations</span>
+<span class="keyword">#include</span> &lt;stdio.h&gt;
+<span class="keyword">#include</span> &lt;stdlib.h&gt;
+<span class="keyword">#define</span> MAX 100
+
+<span class="type">int</span> stack[MAX];
+<span class="type">int</span> top = -1;
+
+<span class="type">void</span> <span class="func">push</span>(<span class="type">int</span> value) {
+    <span class="keyword">if</span> (top == MAX - 1) {
+        printf(<span class="var">"Stack Overflow\n"</span>);
+    } <span class="keyword">else</span> {
+        stack[++top] = value;
+        printf(<span class="var">"Pushed %d\n"</span>, value);
+    }
+}
+
+<span class="type">int</span> <span class="func">pop</span>() {
+    <span class="keyword">if</span> (top == -1) {
+        printf(<span class="var">"Stack Underflow\n"</span>);
+        <span class="keyword">return</span> -1;
+    } <span class="keyword">else</span> {
+        <span class="keyword">return</span> stack[top--];
+    }
+}
+
+<span class="type">int</span> <span class="func">peek</span>() {
+    <span class="keyword">if</span> (top == -1) {
+        printf(<span class="var">"Stack is Empty\n"</span>);
+        <span class="keyword">return</span> -1;
+    }
+    <span class="keyword">return</span> stack[top];
+}
+
+<span class="type">int</span> <span class="func">main</span>() {
+    push(10);
+    push(20);
+    push(30);
+    
+    printf(<span class="var">"Top element: %d\n"</span>, peek());
+    
+    printf(<span class="var">"Popped element: %d\n"</span>, pop());
+    printf(<span class="var">"Popped element: %d\n"</span>, pop());
+    
+    <span class="keyword">return</span> 0;
+}</pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-footer">
+        <span>Based on Standard C Library Implementation</span>
+        <span>Slide 07/11</span>
+    </div>
+</div>
+
+<div class="slide-container">
+    <div class="slide-header">
+        <h2>Demo: Linked List Program</h2>
+        <span class="slide-tag">Singly Linked List in C</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 40px; height: 100%;">
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+            <h3 style="color: var(--primary);">Program Overview</h3>
+            <p>Dynamic memory management using pointers.</p>
+            <ul style="margin-top: 20px; font-size: 15px;">
+                <li><strong>struct Node:</strong> Self-referential structure.</li>
+                <li><strong>insert():</strong> Allocates heap memory (malloc).</li>
+                <li><strong>delete():</strong> Frees memory to prevent leaks.</li>
+                <li><strong>display():</strong> Traverses until NULL.</li>
+            </ul>
+        </div>
+
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="dot dot-red"></div>
+                <div class="dot dot-yellow"></div>
+                <div class="dot dot-green"></div>
+                <span style="color: #94a3b8; font-size: 12px; margin-left: 10px; font-family: monospace;">linkedlist_demo.c</span>
+            </div>
+            <div class="terminal-body code-block" style="margin: 0; border-radius: 0; border: none; font-size: 13px;">
+<pre style="margin:0;"><span class="comment">// C Program for Singly Linked List</span>
+<span class="keyword">#include</span> &lt;stdio.h&gt;
+<span class="keyword">#include</span> &lt;stdlib.h&gt;
+
+<span class="keyword">struct</span> Node {
+    <span class="type">int</span> data;
+    <span class="keyword">struct</span> Node* next;
+};
+
+<span class="type">void</span> <span class="func">insert</span>(<span class="keyword">struct</span> Node** head, <span class="type">int</span> val) {
+    <span class="keyword">struct</span> Node* newNode = (<span class="keyword">struct</span> Node*)<span class="keyword">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> Node));
+    newNode->data = val;
+    newNode->next = *head;
+    *head = newNode;
+    <span class="func">printf</span>(<span class="var">"Inserted %d\n"</span>, val);
+}
+
+<span class="type">void</span> <span class="func">delete</span>(<span class="keyword">struct</span> Node** head) {
+    <span class="keyword">if</span> (*head == NULL) <span class="keyword">return</span>;
+    <span class="keyword">struct</span> Node* temp = *head;
+    *head = (*head)->next;
+    <span class="func">printf</span>(<span class="var">"Deleted %d\n"</span>, temp->data);
+    <span class="keyword">free</span>(temp);
+}
+
+<span class="type">void</span> <span class="func">display</span>(<span class="keyword">struct</span> Node* node) {
+    <span class="keyword">while</span> (node != NULL) {
+        <span class="func">printf</span>(<span class="var">"%d -> "</span>, node->data);
+        node = node->next;
+    }
+    <span class="func">printf</span>(<span class="var">"NULL\n"</span>);
+}
+
+<span class="type">int</span> <span class="func">main</span>() {
+    <span class="keyword">struct</span> Node* head = NULL;
+    
+    insert(&head, 10);
+    insert(&head, 20);
+    insert(&head, 30);
+    
+    <span class="func">printf</span>(<span class="var">"List: "</span>);
+    display(head);
+    
+    delete(&head);
+    <span class="func">printf</span>(<span class="var">"After Deletion: "</span>);
+    display(head);
+    
+    <span class="keyword">return</span> 0;
+}</pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-footer">
+        <span>Dynamic Memory Allocation Example</span>
+        <span>Slide 08/11</span>
+    </div>
+</div>
+
+<div class="slide-container">
+    <div class="slide-header">
+        <h2>Frequently Asked Questions</h2>
+        <span class="slide-tag">Viva & Interview Prep</span>
+    </div>
+
+    <div class="faq-container">
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>1. When should you prefer a Linked List over an Array?</span>
+                <i class="fa-solid fa-chevron-down" style="color: var(--accent);"></i>
+            </div>
+            <div class="faq-answer">
+                Use a Linked List when you do not know the exact number of elements in advance (Dynamic Size) or when you need frequent insertions and deletions (O(1) time). Arrays are preferred for random access (O(1) access).
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>2. What is Stack Overflow and when does it occur?</span>
+                <i class="fa-solid fa-chevron-down" style="color: var(--accent);"></i>
+            </div>
+            <div class="faq-answer">
+                Stack Overflow occurs when the stack memory runs out. This typically happens in deep or infinite recursion where new stack frames are pushed without popping the previous ones.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>3. Why is binary search not feasible in Singly Linked Lists?</span>
+                <i class="fa-solid fa-chevron-down" style="color: var(--accent);"></i>
+            </div>
+            <div class="faq-answer">
+                Binary Search requires random access to the middle element (O(1)). In a Singly Linked List, accessing the middle element requires traversing from the head (O(n)), making Binary Search effectively O(n) instead of O(log n).
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>4. What is the advantage of a Circular Queue over a Linear Queue?</span>
+                <i class="fa-solid fa-chevron-down" style="color: var(--accent);"></i>
+            </div>
+            <div class="faq-answer">
+                In a standard array-based Linear Queue, memory at the front becomes unusable after dequeue operations. A Circular Queue connects the rear back to the front, utilizing empty spaces and preventing "false overflow."
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-footer">
+        <span>Common Viva Questions</span>
+        <span>Slide 09/11</span>
+    </div>
+</div>
+
+<div class="slide-container" style="justify-content: center; align-items: center; text-align: center;">
+    <h1 style="color: var(--primary); margin-bottom: 20px;">Thank You</h1>
+    <p style="font-size: 24px; color: var(--secondary); margin-bottom: 40px;">Questions & Discussion</p>
+    
+    <div style="border-top: 1px solid var(--border); padding-top: 20px; width: 60%;">
+        <p class="slide-tag" style="font-size: 14px;">Resources</p>
+        <p style="font-size: 16px; color: var(--secondary);">TechMax, ANSI C, GeeksforGeeks</p>
+    </div>
+</div>
+
+<div class="slide-container">
+    <div class="slide-header">
+        <h2>Developer Assessment</h2>
+        <span class="slide-tag">Skill Verification</span>
+    </div>
+
+    <div class="quiz-wrapper" id="quizContainer">
+        <div style="text-align: center; margin-top: 100px; animation: slideUp 0.6s;">
+            <i class="fa-solid fa-code" style="font-size: 60px; color: var(--accent); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom: 15px; font-size: 28px;">Ready to Compile Your Knowledge?</h3>
+            <p style="margin-bottom: 40px; color: var(--secondary);">20 Questions • Increasing Difficulty • Instant Feedback</p>
+            <button class="quiz-btn" onclick="startQuiz()" style="font-size: 18px; padding: 15px 40px;">Initialize Quiz <i class="fa-solid fa-play" style="margin-left: 8px;"></i></button>
+        </div>
+    </div>
+
+    <div class="slide-footer">
+        <span>Assessment Module</span>
+        <span>Slide 11/11</span>
+    </div>
+</div>
+
+<div id="modal-doubly" class="modal-overlay">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeModal('modal-doubly')"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="margin-bottom: 20px; color: var(--accent-dark);">Doubly Linked List</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+            <div>
+                <h4 style="color: var(--secondary); text-transform: uppercase; font-size: 12px; margin-bottom: 10px;">Structure Definition</h4>
+                <div class="code-block" style="margin-top: 0;"><span class="keyword">struct</span> Node {<br>&nbsp;&nbsp;<span class="type">int</span> data;<br>&nbsp;&nbsp;<span class="keyword">struct</span> Node* next;<br>&nbsp;&nbsp;<span class="keyword">struct</span> Node* prev;<br>};</div>
+                <ul style="font-size: 14px;">
+                    <li style="color: #166534;">Bidirectional traversal.</li>
+                    <li style="color: #166534;"><strong>O(1)</strong> deletion if node is known.</li>
+                    <li style="color: #991b1b;">Extra memory overhead.</li>
+                </ul>
+            </div>
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                <h4 style="margin-bottom: 20px; color: var(--secondary);">Visual Representation</h4>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div style="border: 1px solid #94a3b8; border-radius: 4px; display: flex; font-size: 12px; font-family: 'Roboto Mono';"><div style="padding: 8px; background: #e2e8f0; border-right: 1px solid #94a3b8;">Prev</div><div style="padding: 8px; background: white;">Data</div><div style="padding: 8px; background: #e2e8f0; border-left: 1px solid #94a3b8;">Next</div></div>
+                    <i class="fa-solid fa-arrows-left-right" style="color: var(--accent);"></i>
+                    <div style="border: 1px solid #94a3b8; border-radius: 4px; display: flex; font-size: 12px; font-family: 'Roboto Mono';"><div style="padding: 8px; background: #e2e8f0; border-right: 1px solid #94a3b8;">Prev</div><div style="padding: 8px; background: white;">Data</div><div style="padding: 8px; background: #e2e8f0; border-left: 1px solid #94a3b8;">Next</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-circular" class="modal-overlay">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeModal('modal-circular')"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="margin-bottom: 20px; color: var(--accent-dark);">Circular Linked List</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+            <div>
+                <h4 style="color: var(--secondary); text-transform: uppercase; font-size: 12px; margin-bottom: 10px;">Definition</h4>
+                <p style="font-size: 15px;">A linked list where all nodes are connected to form a circle. There is no NULL at the end.</p>
+                <ul style="font-size: 14px;">
+                    <li style="color: #166534;">Any node can be a starting point.</li>
+                    <li style="color: #166534;">Useful for Queue implementations.</li>
+                    <li style="color: #991b1b;">Risk of infinite loops.</li>
+                </ul>
+            </div>
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                 <h4 style="margin-bottom: 20px; color: var(--secondary);">Visual Representation</h4>
+                 <div style="position: relative; width: 150px; height: 150px; border: 2px dashed var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: var(--accent); font-weight: bold; font-family: 'Poppins';">LOOP</span>
+                    <i class="fa-solid fa-rotate" style="position: absolute; top: -12px; right: 20px; background: white; padding: 0 5px; color: var(--accent);"></i>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- MODAL LOGIC ---
+    function openModal(modalId) { document.getElementById(modalId).classList.add('active'); }
+    function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+
+    // --- QUIZ LOGIC ---
+    const questions = [
+        // Level 1: Basic Definitions (Easy)
+        { q: "Which data structure follows the LIFO principle?", options: ["Queue", "Stack", "Linked List", "Array"], answer: 1 },
+        { q: "What does 'FIFO' stand for?", options: ["First In First Out", "Fast In Fast Out", "First In Fast Out", "Fast In First Out"], answer: 0 },
+        { q: "Which operation adds an element to a Stack?", options: ["Pop", "Peek", "Push", "Enqueue"], answer: 2 },
+        { q: "In a Singly Linked List, a node consists of:", options: ["Data only", "Pointer only", "Data and Pointer", "Two Pointers"], answer: 2 },
+        { q: "What is the condition for a Stack Overflow?", options: ["Top == -1", "Top == MAX - 1", "Top == 0", "Top == NULL"], answer: 1 },
+        
+        // Level 2: Operations & Complexity (Medium)
+        { q: "What is the time complexity of 'Pop' operation in a Stack?", options: ["O(n)", "O(log n)", "O(1)", "O(n^2)"], answer: 2 },
+        { q: "Where is insertion performed in a Queue?", options: ["Front", "Rear", "Middle", "Anywhere"], answer: 1 },
+        { q: "Which data structure allows traversal in both directions?", options: ["Singly Linked List", "Circular Singly List", "Doubly Linked List", "Stack"], answer: 2 },
+        { q: "Accessing the Nth element in a Linked List takes:", options: ["O(1)", "O(n)", "O(log n)", "O(1) if sorted"], answer: 1 },
+        { q: "In a Queue, deletion is performed at the:", options: ["Rear", "Front", "Top", "Bottom"], answer: 1 },
+
+        // Level 3: Advanced Concepts (Hard)
+        { q: "What pointer does the last node of a Circular Linked List contain?", options: ["NULL", "Address of Head", "Address of Previous", "Garbage Value"], answer: 1 },
+        { q: "Which is a real-world application of Circular Linked Lists?", options: ["Undo button", "Browser History", "Round Robin Scheduling", "Function Calls"], answer: 2 },
+        { q: "To insert at the END of a SLL efficiently (O(1)), you need:", options: ["Only Head pointer", "Tail pointer", "Doubly Linked List", "Circular List"], answer: 1 },
+        { q: "What extra field does a Doubly Linked List node have compared to SLL?", options: ["Data", "Next", "Prev", "Head"], answer: 2 },
+        { q: "Which data structure is best for implementing Recursion?", options: ["Queue", "Stack", "Tree", "Graph"], answer: 1 },
+
+        // Level 4: Expert / Tricky (Expert)
+        { q: "Why are Linked Lists considered 'Cache Unfriendly'?", options: ["They use too much memory", "Nodes are not contiguous", "Pointers are slow", "They are too small"], answer: 1 },
+        { q: "In a Circular Queue implemented with an Array, how do we wrap around?", options: ["index + 1", "(index + 1) % size", "index - 1", "reset to 0 manually"], answer: 1 },
+        { q: "If Top = -1, what does it indicate?", options: ["Stack is Full", "Stack is Empty", "Stack has 1 element", "Error"], answer: 1 },
+        { q: "Deleting a node in a DLL given ONLY the pointer to that node is:", options: ["O(n)", "O(1)", "O(log n)", "Impossible"], answer: 1 },
+        { q: "Which structure creates 'False Overflow' in array implementation?", options: ["Linear Queue", "Circular Queue", "Stack", "Linked List"], answer: 0 }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+
+    function startQuiz() {
+        currentQ = 0;
+        score = 0;
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const container = document.getElementById('quizContainer');
+        const q = questions[currentQ];
+        const progress = ((currentQ + 1) / questions.length) * 100;
+        
+        let difficulty = "Lvl 1: Basic";
+        let badgeColor = "#10b981"; // Green
+        
+        if(currentQ > 14) { difficulty = "Lvl 4: Expert"; badgeColor = "#ef4444"; } // Red
+        else if(currentQ > 9) { difficulty = "Lvl 3: Hard"; badgeColor = "#f59e0b"; } // Yellow
+        else if(currentQ > 4) { difficulty = "Lvl 2: Medium"; badgeColor = "#3b82f6"; } // Blue
+
+        container.innerHTML = `
+            <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width: ${progress}%"></div></div>
+            <div class="quiz-stats">
+                <span><i class="fa-solid fa-terminal"></i> Question ${currentQ + 1}/20</span>
+                <span style="color:${badgeColor}; font-weight:700;">${difficulty}</span>
+                <span>Score: ${score}</span>
+            </div>
+            <div class="quiz-question-box">${q.q}</div>
+            <div class="quiz-options">
+                ${q.options.map((opt, idx) => `
+                    <div class="quiz-option" onclick="checkAnswer(${idx}, this)">
+                        <i class="fa-regular fa-circle" style="margin-right:10px; color:var(--secondary);"></i> ${opt}
+                    </div>
+                `).join('')}
+            </div>
+            <div class="quiz-controls">
+                <button class="quiz-btn" id="nextBtn" onclick="nextQuestion()" disabled>Next Question <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        `;
+    }
+
+    function checkAnswer(selectedIdx, element) {
+        const options = document.querySelectorAll('.quiz-option');
+        options.forEach(opt => opt.style.pointerEvents = 'none'); // Lock options
+
+        const correctIdx = questions[currentQ].answer;
+        const icon = element.querySelector('i');
+        
+        if(selectedIdx === correctIdx) {
+            element.classList.add('correct');
+            icon.classList.replace('fa-circle', 'fa-check-circle');
+            score++;
+        } else {
+            element.classList.add('wrong');
+            icon.classList.replace('fa-circle', 'fa-times-circle');
+            
+            // Highlight correct one
+            const correctEl = options[correctIdx];
+            correctEl.classList.add('correct');
+            correctEl.querySelector('i').classList.replace('fa-circle', 'fa-check-circle');
+        }
+
+        document.getElementById('nextBtn').disabled = false;
+    }
+
+    function nextQuestion() {
+        currentQ++;
+        if(currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        const container = document.getElementById('quizContainer');
+        const percentage = Math.round((score / 20) * 100);
+        let gradeColor = percentage >= 70 ? 'term-green' : (percentage >= 40 ? 'term-blue' : 'term-purple');
+        
+        container.innerHTML = `
+            <div class="result-terminal" style="animation: slideUp 0.6s;">
+                <span class="term-line"><span class="term-blue">user@dev-term:~$</span> ./check_score.sh</span>
+                <span class="term-line">Compiling results... <span class="term-green">Done.</span></span>
+                <br>
+                <span class="term-line">--------------------------------</span>
+                <span class="term-line"> FINAL ASSESSMENT REPORT </span>
+                <span class="term-line">--------------------------------</span>
+                <span class="term-line">Total Questions : 20</span>
+                <span class="term-line">Correct Answers : <span class="${gradeColor}">${score}</span></span>
+                <span class="term-line">Accuracy        : ${percentage}%</span>
+                <br>
+                <span class="term-line"><span class="term-blue">user@dev-term:~$</span> <span class="term-purple">_</span></span>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="quiz-btn" onclick="startQuiz()"><i class="fa-solid fa-rotate-right"></i> Reboot Quiz</button>
+            </div>
+        `;
+    }
+</script>
+
+</body>
+</html>
